@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="main">
+        <div class="center">
+            <p class="main_txt">Скорость печати</p>
+            <div class="menu" id="menu">
+                <div class="center row">
+                    <div class="Русский row">
+                        <button class="special_button" onclick="Select_lang(0)">Русский</button>
+                        <div id="0">
+                            <div class="center">
+                                <button onclick="CreateTrueTxtFromArray(0)">легко</button>
+                                <button onclick="CreateTrueTxtFromArray(1)">средне</button>
+                                <button onclick="CreateTrueTxtFromArray(2)">сложно</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="type_game">
+                        <button onclick="Select_type_game(9000)">endless</button>
+                        <div class="notendless">
+                            <button onclick="Select_type_game(60)">60s</button>
+                            <button onclick="Select_type_game(120)">120s</button>
+                            <button onclick="Select_type_game(180)">180s</button>
+                            <button onclick="Select_type_game(240)">240s</button>
+                            <button onclick="Select_type_game(300)">300s</button>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="English row">
+                        <button class="special_button" onclick="Select_lang(1)">English</button>
+                        <div id="1">
+                            <div class="center">
+                                <button onclick="CreateTrueTxtFromArray(0)">easy</button>
+                                <button onclick="CreateTrueTxtFromArray(1)">medium</button>
+                                <button onclick="CreateTrueTxtFromArray(2)">hard</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game" id="game">
+                <div class="menu_game center">
+                    <div class="column">
+                        <button class="back" onclick="Back()">back</button>
+
+                        <div class="timer center">
+                            <p id="timer_html">начало...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="center">
+                    <div id="true_txt" class="true_txt"></div>
+                </div>
+
+                <div id="introduced_txt" class="introduced_txt">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="./script.js"></script>
+</body>
+</html>
