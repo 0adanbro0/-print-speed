@@ -10,71 +10,17 @@
     <title>Document</title>
 </head>
 <body>
-    
-    <div class="main">
-        <div class="center">
-            <p class="main_txt">Скорость печати</p>
-            <div class="menu" id="menu">
-                <div class="center row">
-                    <div class="Русский row">
-                        <button class="special_button" onclick="Select_lang(0)">Русский</button>
-                        <div id="0">
-                            <div class="center">
-                                <button onclick="CreateTrueTxtFromArray(0)">легко</button>
-                                <button onclick="CreateTrueTxtFromArray(1)">средне</button>
-                                <button onclick="CreateTrueTxtFromArray(2)">сложно</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="line"></div>
-                    <div class="type_game">
-                        <button onclick="Select_type_game(9000)">endless</button>
-                        <div class="notendless">
-                            <button onclick="Select_type_game(60)">60s</button>
-                            <button onclick="Select_type_game(120)">120s</button>
-                            <button onclick="Select_type_game(180)">180s</button>
-                            <button onclick="Select_type_game(240)">240s</button>
-                            <button onclick="Select_type_game(300)">300s</button>
-                        </div>
-                    </div>
-                    <div class="line"></div>
-                    <div class="English row">
-                        <button class="special_button" onclick="Select_lang(1)">English</button>
-                        <div id="1">
-                            <div class="center">
-                                <button onclick="CreateTrueTxtFromArray(0)">easy</button>
-                                <button onclick="CreateTrueTxtFromArray(1)">medium</button>
-                                <button onclick="CreateTrueTxtFromArray(2)">hard</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="game" id="game">
-                <div class="menu_game center">
-                    <div class="column">
-                        <button class="back" onclick="Back()">back</button>
+    <div class="game">
+        <span class="game-main_text">
 
-                        <div class="timer center">
-                            <p id="timer_html">начало...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="center">
-                    <div id="true_txt" class="true_txt"></div>
-                </div>
-
-                <div id="introduced_txt" class="introduced_txt">
-
-                </div>
-            </div>
-        </div>
+        </span>
     </div>
 
+    <div class="keyboard">
+        <input id="input_keyboard" type="text">
+    </div>
 
-
-    <script src="./script.js"></script>
+    <script type="module" src="./src/main.ts"></script>
 </body>
 </html>
