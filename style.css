@@ -19,6 +19,14 @@ time, mark, audio, video {
   vertical-align: baseline;
 };
 
-.game-main_text{
-  white-space: pre-wrap;
+.game{
+  width: 100vh;
+  display: flex;
+  flex-direction: row;
+  white-space: pre;
+}
+
+.game-user_text{
+  background-color: green;
+  margin: 0px;
 }
