@@ -62,7 +62,9 @@ function Game(arg:boolean){
     }
 }
 
-document.addEventListener('keydown', (PressedKey)=>{
+window.addEventListener('keydown', (PressedKey)=>{
+    let key = document.querySelectorAll('.key')
+    if(PressedKey.key === 'Space') console.log('awdawdawdawd ')
     if (PressedKey.key.length > 1) return;
     let input_keyboard = document.querySelector('#input_keyboard') as HTMLInputElement;
     if(!input_keyboard){
@@ -70,12 +72,17 @@ document.addEventListener('keydown', (PressedKey)=>{
     }
     input_keyboard.value = "";
 
-    console.log(PressedKey.key)
-
     if(PressedKey.key == array_default_text[0]) Game(true);
-    else if(PressedKey.key !== array_default_text[0]) Game(false);
+    else Game(false);
 
-    
+    key.forEach( (element)=>{
+        if(element.textContent == PressedKey.key || element.textContent == PressedKey.code){
+            element.classList.add('active_Key');
+            setTimeout( ()=>{
+                element.classList.remove('active_Key');
+            },100)
+        }
+    })
 });
 
 
