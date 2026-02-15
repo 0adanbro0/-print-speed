@@ -35,6 +35,20 @@ body{
   flex-direction: column;
 }
 
+.correct{
+  background-color: rgb(10, 195, 10);
+}
+
+.incorrect{
+  background-color: rgb(182, 0, 0);
+}
+
+.interactive_text_place{
+  display: flex;
+  flex-direction: row;
+  white-space: pre;
+}
+
 .keyboard_place-line{
   display: flex;
   flex-direction: row;
