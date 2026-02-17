@@ -68,6 +68,12 @@ body{
   margin: 3px;
   border: 1px solid rgb(66, 66, 66);
   border-radius: 10px;
+  transition: 0.1s;
+}
+
+.active{
+  background-color: blue;
+  transform: scale(0.95);
 }
 
 .space{

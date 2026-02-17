@@ -6,6 +6,14 @@ import { useEffect, useState } from 'react';
 import string_default_text from '../data/database'
 
 const App = () => {
+    const eKeys:string[] = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a' , 's' , 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', ' '];
+    const [eKeysStatusContent, SetEKeysStatusContent] = useState<{content:string, status:string}[]>(eKeys.map(symbol=>(
+        {
+            content: symbol,
+            status: 'inactive'
+        }
+    )))
+
     const [arrayCharNodes, SetArrayCharNodes] = useState<{char:string, status:string}[]>(string_default_text[0][0].split("").map(symbol=>({
                                                                                             char: symbol,
                                                                                             status: 'outcoming'
@@ -15,21 +23,37 @@ const App = () => {
         const handleKeyDown = ((e: KeyboardEvent)=>{
             if(e.key.length > 1) return;
             if (currentIndex >= arrayCharNodes.length) return;
+
+            //filter elements and rewrite its status, also remove old status
+            const NewArrayEKeys = eKeysStatusContent.map(element => {
+                return{
+                    ...element,
+                    status: element.content === e.key ? 'active' : 'inactive'
+                }
+            })
+            console.log(NewArrayEKeys)
+
+            SetEKeysStatusContent(
+                NewArrayEKeys
+            )
+
             console.log(e.key);
 
-            const newArrayClassName:{char:string, status:string}[] = [...arrayCharNodes];
+            const newArrayClassNameChar = arrayCharNodes.map((element, index) => {
+                if(currentIndex != index)return element
+                return{
+                    ...element,
+                    status: e.key === element.char ? 'correct' : 'incorrect' 
+                }
+            });
 
-            if (e.key === arrayCharNodes[currentIndex].char) {
-                newArrayClassName[currentIndex].status = 'correct';
-                
+            SetArrayCharNodes(newArrayClassNameChar)
+            console.log(newArrayClassNameChar);
+
+            if(arrayCharNodes[currentIndex].char == e.key){
                 SetCurrentIndex(prev => prev + 1);
                 console.log(currentIndex)
             }
-            else{
-                newArrayClassName[currentIndex].status = 'incorrect';
-            }
-            SetArrayCharNodes(newArrayClassName)
-            console.log(arrayCharNodes);
         })
 
         window.addEventListener('keydown', handleKeyDown)
@@ -37,10 +61,8 @@ const App = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [currentIndex, arrayCharNodes]);
+    }, [currentIndex, arrayCharNodes, eKeysStatusContent]);
 
-
-    const eKeys:string[] = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a' , 's' , 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', 'Space'];
     return (
         <>
         <div className="interactive_text_place">
@@ -50,8 +72,8 @@ const App = () => {
         </div>
         <Input Content={' '} />
         <div className="keyboard_place">
-            {eKeys.map((element, index) => (
-                <EKeyboard key={index} ClassName="key" Content={element} />
+            {eKeysStatusContent.map((element, index) => (
+                <EKeyboard key={index} ClassName={`key ${element.status}`} Content={element.content} />
             ))}
         </div>
         </>
