@@ -3,6 +3,7 @@ import Input from "./Input"
 
 import { useEffect, useState } from 'react';
 
+import SetTimer from "../SetTimer/setTimer";
 import string_default_text from '../data/database'
 
 const App = () => {
@@ -19,10 +20,13 @@ const App = () => {
                                                                                             status: 'outcoming'
                                                                                         })));
     const [currentIndex, SetCurrentIndex] = useState<number>(0);
+    //const [StartTime, setStartTime] = useState<number>(Date.now()/1000);
     useEffect(() => {
         const handleKeyDown = ((e: KeyboardEvent)=>{
             if(e.key.length > 1) return;
             if (currentIndex >= arrayCharNodes.length) return;
+
+            //SetTimer(10, StartTime);
 
             //filter elements and rewrite its status, also remove old status
             const NewArrayEKeys = eKeysStatusContent.map(element => {
