@@ -1,10 +1,12 @@
 import EKeyboard from "./EKeyboard"
 import Input from "./Input"
+import Timer from "./Timer"
 
 import { useEffect, useState } from 'react';
 
-import SetTimer from "../SetTimer/setTimer";
+import SetTimer from "../utils/SetTimer/setTimer";
 import string_default_text from '../data/database'
+
 
 const App = () => {
     const eKeys:string[] = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a' , 's' , 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', ' '];
@@ -20,13 +22,34 @@ const App = () => {
                                                                                             status: 'outcoming'
                                                                                         })));
     const [currentIndex, SetCurrentIndex] = useState<number>(0);
-    //const [StartTime, setStartTime] = useState<number>(Date.now()/1000);
+    const [startTime, setStartTime] = useState<number>(0);
+    const [timePassedView, setTimePassedView] = useState<number>(0);                                                                                
+    
     useEffect(() => {
+        const timer = setInterval(()=>{
+            if(currentIndex){
+                const timePassed:number = SetTimer(0, startTime)!;
+                setTimePassedView(timePassed);  
+            }
+            else if(!currentIndex){
+                const timePassed:number = 0;
+                setTimePassedView(timePassed);  
+            }
+        }, 1000)
+
+        return () => clearInterval(timer);
+    }, [startTime])
+
+    useEffect(() => {
+
         const handleKeyDown = ((e: KeyboardEvent)=>{
             if(e.key.length > 1) return;
             if (currentIndex >= arrayCharNodes.length) return;
 
-            //SetTimer(10, StartTime);
+            if(!currentIndex) {
+                const timeStarted = Date.now()/1000
+                setStartTime(timeStarted); 
+            }
 
             //filter elements and rewrite its status, also remove old status
             const NewArrayEKeys = eKeysStatusContent.map(element => {
@@ -69,6 +92,7 @@ const App = () => {
 
     return (
         <>
+        <Timer content={timePassedView || 0}></Timer>
         <div className="interactive_text_place">
             {arrayCharNodes.map((element, index) => (
                 <span key={index} className={`char ${element.status}`}>{element.char}</span>
