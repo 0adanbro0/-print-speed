@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import SetTimer from "../../utils/SetTimer/setTimer";
 import string_default_text from '../../data/database'
 
+const eKeys:string[] = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a' , 's' , 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', ' '];
+
 const UseTyping = () => {
-    const eKeys:string[] = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a' , 's' , 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', ' '];
     const [eKeysStatusContent, SetEKeysStatusContent] = useState<{content:string, status:string}[]>(eKeys.map(symbol=>(
         {
             content: symbol,
@@ -20,9 +21,9 @@ const UseTyping = () => {
     const [startTime, setStartTime] = useState<number>(0);
     const [timePassedView, setTimePassedView] = useState<number>(0);   
     const [mode, setTimeMode] = useState<string>('infinitive'); 
-    //СДЕЛАТЬ ОКОНЧАНИЕ ВРЕМЕНИ И ПОДСЧЕТ СКОРОСТИ СЛОВ В МИНУТУ
+    //СДЕЛАТЬ ОКОНЧАНИЕ ВРЕМЕНИ И ПОДСЧЕТ СКОРОСТИ СЛОВ В МИНУТУ. Убираем один value при backspace, перерисовываем массив с добавлением outcomming если его value больше чем current
     function ToggleMode() {
-        const newMode =  mode == 'infinitive' ? 'countdown' : 'infinitive';
+        const newMode:string =  mode == 'infinitive' ? 'countdown' : 'infinitive';
         setTimeMode(newMode);
         ResetAll()
         if(currentIndex) CheckMode()
@@ -41,11 +42,14 @@ const UseTyping = () => {
     }
 
     function ResetAll() {
-        SetCurrentIndex(0)
-        setStartTime(0)
-        setTimePassedView(0)
-        SetArrayCharNodes(string_default_text[0][0].split("").map(symbol=>({char: symbol, status: 'outcoming'})))
-        SetEKeysStatusContent(eKeys.map(symbol=>({content: symbol,status: 'inactive'})))
+        const defaultSettings:number = 0
+        SetCurrentIndex(defaultSettings)
+        setStartTime(defaultSettings)
+        setTimePassedView(defaultSettings)
+        const newText:{char:string, status:string}[] = string_default_text[0][0].split("").map(symbol=>({char: symbol, status: 'outcoming'}))
+        SetArrayCharNodes(newText)
+        const newEKeys:{content:string, status:string}[] = eKeys.map(symbol=>({content: symbol,status: 'inactive'}))
+        SetEKeysStatusContent(newEKeys)
     }
     
     useEffect(() => {
@@ -63,12 +67,12 @@ const UseTyping = () => {
             if (currentIndex >= arrayCharNodes.length) return;
 
             if(!currentIndex) {
-                const timeStarted = Date.now()/1000
+                const timeStarted:number = Date.now()/1000
                 setStartTime(timeStarted); 
             }
 
             //filter elements and rewrite its status, also remove old status
-            const NewArrayEKeys = eKeysStatusContent.map(element => {
+            const NewArrayEKeys:{content:string, status:string}[] = eKeysStatusContent.map(element => {
                 return{
                     ...element,
                     status: element.content === e.key ? 'active' : 'inactive'
@@ -82,7 +86,7 @@ const UseTyping = () => {
 
             console.log(e.key);
 
-            const newArrayClassNameChar = arrayCharNodes.map((element, index) => {
+            const newArrayClassNameChar:{status:string, char:string}[] = arrayCharNodes.map((element, index) => {
                 if(currentIndex != index)return element
                 return{
                     ...element,
