@@ -6,7 +6,7 @@ import UseTyping from "./logic/UseTyping";
 
 const App = () => {
 
-    const { ToggleMode, state, arrayCharNodes, eKeysStatusContent} = UseTyping();
+    const { ToggleMode, state, eKeysStatusContent} = UseTyping();
     
 
     return (
@@ -14,7 +14,7 @@ const App = () => {
         <Button click={ToggleMode} content={state.mode}></Button>
         <Timer content={state.timePassedView || 0}></Timer>
         <div className="interactive_text_place">
-            {arrayCharNodes.map((element:any, index:number) => (
+            {state.arrayCharNodes.map((element:any, index:number) => (
                 <span key={index} className={`char ${element.status}`}>{element.char}</span>
             ))}
         </div>

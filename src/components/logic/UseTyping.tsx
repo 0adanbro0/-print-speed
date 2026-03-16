@@ -8,10 +8,12 @@ interface reducerSession{
     startTime: number,
     timePassedView:number,
     mode: string,
-    text: string
+    text: string,
+    arrayCharNodes: {char:string, status:string}[]
 }
 
 const eKeys:string[] = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a' , 's' , 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', ' '];
+const arraySystemKey:string[] = ['Backspace']
 
 const UseTyping = () => {
     const [eKeysStatusContent, SetEKeysStatusContent] = useState<{content:string, status:string}[]>(eKeys.map(symbol=>(
@@ -21,25 +23,40 @@ const UseTyping = () => {
         }
     )))
 
-    const [arrayCharNodes, SetArrayCharNodes] = useState<{char:string, status:string}[]>(string_default_text[0][0].split("").map(symbol=>({
-                                                                                            char: symbol,
-                                                                                            status: 'outcoming'
-                                                                                        })));
-
     function reducer(state:reducerSession, action:any){
         switch (action.type) {
         case "defaultSetting":
+            const newText:{char:string, status:string}[] = string_default_text[0][0].split("").map(symbol=>({char: symbol, status: 'outcoming'}))
             return{
                 ...state, 
                 currentIndex: 0,
                 startTime: 0,
                 timePassedView: 0,
+                arrayCharNodes: newText
             }
         case 'ToggleMode':
             const newMode:string =  state.mode == 'infinitive' ? 'countdown' : 'infinitive';
             return({
                 ...state,
                 mode: newMode
+            })
+        case 'decrementCurrentIndex':
+            const decrementIndex:number = state.currentIndex - 1
+            console.log(`decrement: ${decrementIndex}`)
+            const newArrayClassNameCharDecrement:{status:string, char:string}[] = state.arrayCharNodes.map((element, index) => {
+                if(index == decrementIndex)
+                    return({                           
+                        ...element,
+                        status: 'outcoming'
+                    })
+                else{
+                    return element
+                }
+            });
+            return({
+                ...state,
+                currentIndex: decrementIndex,
+                arrayCharNodes: newArrayClassNameCharDecrement
             })
         case 'checkMode':
             let timePassed:number = 0
@@ -55,8 +72,41 @@ const UseTyping = () => {
                 ...state,
                 startTime: timeStarted
             })
+        case 'incorrectChar':
+            const newArrayClassNameCharIncorrect:{status:string, char:string}[] = state.arrayCharNodes.map((element, index) => {
+                if(index == state.currentIndex)
+                    return({                           
+                        ...element,
+                        status: 'incorrect'
+                    })
+                else{
+                    return element
+                }
+            });
+            return({
+                ...state,
+                arrayCharNodes: newArrayClassNameCharIncorrect
+            })
         case 'nextChar':
-            return { ...state, currentIndex: state.currentIndex + 1 };
+            const newArrayClassNameCharIncrement:{status:string, char:string}[] = state.arrayCharNodes.map((element, index) => {
+                if(index > state.currentIndex)
+                    return({                           
+                        ...element,
+                        status: 'outcoming'
+                    })
+                else if(index < state.currentIndex){
+                    return element
+                }
+                return({
+                    ...element,
+                    status: action.key === element.char ? 'correct' : 'incorrect' 
+                })
+            });
+            return { 
+                ...state, 
+                currentIndex: state.currentIndex + 1, 
+                arrayCharNodes: newArrayClassNameCharIncrement
+            };
         case 'SET_TEXT':
             return { ...state, text: action.payload };
         default:
@@ -64,9 +114,8 @@ const UseTyping = () => {
         }
     }
 
-    const [state, dispatch] = useReducer(reducer, { currentIndex: 0, startTime: 0, timePassedView: 0, mode: 'infinitive', text: ''});
-    //СДЕЛАТЬ ОКОНЧАНИЕ ВРЕМЕНИ И ПОДСЧЕТ СКОРОСТИ СЛОВ В МИНУТУ. Убираем один value при backspace, перерисовываем массив с добавлением outcomming если его value больше чем current. 
-    // Проблема!!!! Не переключается контроль времени после добавления редуктера
+    const [state, dispatch] = useReducer(reducer, { currentIndex: 0, startTime: 0, timePassedView: 0, mode: 'infinitive', text: '', arrayCharNodes : string_default_text[0][0].split("").map(symbol=>({char: symbol,status: 'outcoming'}))});
+    //СДЕЛАТЬ ОКОНЧАНИЕ ВРЕМЕНИ И ПОДСЧЕТ СКОРОСТИ СЛОВ В МИНУТУ. Сделано backspace, но подвисает по среди текста неправильный символ, если начать удалять сразу после ошибки
     function ToggleMode() {
         ResetAll()
         dispatch({type: 'ToggleMode'})
@@ -82,8 +131,6 @@ const UseTyping = () => {
 
     function ResetAll() {
         dispatch({type :"defaultSetting"})
-        const newText:{char:string, status:string}[] = string_default_text[0][0].split("").map(symbol=>({char: symbol, status: 'outcoming'}))
-        SetArrayCharNodes(newText)
         const newEKeys:{content:string, status:string}[] = eKeys.map(symbol=>({content: symbol,status: 'inactive'}))
         SetEKeysStatusContent(newEKeys)
     }
@@ -99,8 +146,8 @@ const UseTyping = () => {
     useEffect(() => {
 
         const handleKeyDown = ((e: KeyboardEvent)=>{
-            if(e.key.length > 1) return;
-            if (state.currentIndex >= arrayCharNodes.length) return;
+            if(e.key.length > 1 && !arraySystemKey.includes(e.key)) return;
+            if (state.currentIndex >= state.arrayCharNodes.length) return;
 
             if(!state.currentIndex) {
                 dispatch({type: 'startTick'})
@@ -115,26 +162,21 @@ const UseTyping = () => {
             })
             console.log(NewArrayEKeys)
 
-            SetEKeysStatusContent(
-                NewArrayEKeys
-            )
+            SetEKeysStatusContent(NewArrayEKeys)
 
             console.log(e.key);
 
-            const newArrayClassNameChar:{status:string, char:string}[] = arrayCharNodes.map((element, index) => {
-                if(state.currentIndex != index)return element
-                return{
-                    ...element,
-                    status: e.key === element.char ? 'correct' : 'incorrect' 
+            if(e.key == 'Backspace'){
+                if(state.currentIndex > 1){
+                    dispatch({type: 'decrementCurrentIndex'})
                 }
-            });
-
-            SetArrayCharNodes(newArrayClassNameChar)
-            console.log(newArrayClassNameChar);
-
-            if(arrayCharNodes[state.currentIndex].char == e.key){
-                dispatch({type: "nextChar"});
+            }
+            else if(state.arrayCharNodes[state.currentIndex].char == e.key){
+                dispatch({type: "nextChar", key:e.key});
                 console.log(state.currentIndex)
+            }
+            else{
+                dispatch({type: "incorrectChar"});
             }
         })
 
@@ -143,12 +185,11 @@ const UseTyping = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [state.currentIndex, arrayCharNodes, eKeysStatusContent]);
+    }, [state.currentIndex, state.arrayCharNodes, eKeysStatusContent]);
 
     return {
         ToggleMode,
         state,
-        arrayCharNodes,
         eKeysStatusContent
     };
 }
