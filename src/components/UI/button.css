@@ -1,0 +1,24 @@
+.button {
+  background-color: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  color: #24292e;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  text-transform: capitalize;
+}
+
+.button:hover {
+  background-color: #f6f8fa;
+  border-color: #d1d5da;
+}
+
+.button:active {
+  background-color: #eef1f3;
+  transform: translateY(1px);
+}

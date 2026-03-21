@@ -157,7 +157,7 @@ const UseTyping = () => {
             const NewArrayEKeys:{content:string, status:string}[] = eKeysStatusContent.map(element => {
                 return{
                     ...element,
-                    status: element.content === e.key ? 'active' : 'inactive'
+                    status: element.content === e.key.toLowerCase() ? 'active' : 'inactive'
                 }
             })
             console.log(NewArrayEKeys)

@@ -1,8 +1,9 @@
 import EKeyboard from "./UI/EKeyboard"
 import Input from "./UI/Input"
-import Timer from "./logic/Timer"
+import Timer from "./UI/Timer"
 import Button from "./UI/Button";
 import UseTyping from "./logic/UseTyping";
+import './app.css'
 
 const App = () => {
 

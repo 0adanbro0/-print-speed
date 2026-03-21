@@ -1,11 +1,13 @@
+import './eKeyBoard.css'
+
 interface KeyBoardProps {
     content?: string;   // может быть строкой или undefined
-    className?: string; // может быть строкой или undefined
+    className?: string;
 }
 
 const EKeyboard = ({className = '', content = ''}: KeyBoardProps) => {
     return (
-        <p className={className}>{content}</p>
+        <span className={className}>{content}</span>
     )
 };
 

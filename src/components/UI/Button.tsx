@@ -1,3 +1,5 @@
+import './button.css'
+
 interface ButtonProps{
     content:string,
     className?:string,
@@ -6,7 +8,7 @@ interface ButtonProps{
 
 const Button = ({content = 'infinitive', className = 'button', click}: ButtonProps) => {
     return (
-        <button onClick={click} className={className}>{content}</button>
+        <button onClick={click} className={`button ${className}`}>{content}</button>
     )
 };
 
