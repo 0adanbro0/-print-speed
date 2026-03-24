@@ -7,7 +7,7 @@ import './app.css'
 
 const App = () => {
 
-    const { ToggleMode, state, eKeysStatusContent} = UseTyping();
+    const { ToggleMode, state, eKeysStatusContent, CloseModal} = UseTyping();
     
 
     return (
@@ -25,6 +25,23 @@ const App = () => {
                 <EKeyboard key={index} className={`key ${element.status}`} content={element.content} />
             ))}
         </div>
+
+
+        {state.isGameOver && (
+        <div className="modal-wrapper">
+            <dialog id="result-modal" open>
+                <div className="center-modal">
+                    <h2>Ваш результат</h2>
+                </div>
+                <div className="center-modal">
+                    <p>Скорость: {state.wpm} WPM</p>
+                </div>
+                <div className="center-modal">
+                    <Button click={CloseModal} content={"закрыть"}></Button>
+                </div>
+            </dialog>
+        </div>)
+        }
         </>
     );
 };

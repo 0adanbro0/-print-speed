@@ -19,6 +19,7 @@ body {
 }
 
 .interactive_text_place {
+    white-space: pre-wrap; /* Сохраняет пробелы и переносит строки */
     background: #ffffff;
     border: 1px solid #e1e4e8;
     border-radius: 12px;
@@ -40,6 +41,27 @@ body {
     background: rgba(203, 36, 49, 0.1); 
     border-radius: 3px;
 }
+.char.current {
+  position: relative;
+  color: #333;
+}
+
+.char.current::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: #333;
+  
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
 
 .keyboard_place {
     display: flex;
@@ -52,4 +74,49 @@ body {
 
 .timer, .button {
     margin-bottom: 10px;
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  
+  background: rgba(255, 255, 255, 0.6); 
+  backdrop-filter: blur(2px);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  
+  animation: fadeIn 0.3s ease;
+}
+
+#result-modal {
+  position: relative;
+  margin: 0; 
+  border: 1px solid #e1e4e8;
+  border-radius: 14px;
+  padding: 40px;
+  background: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  width: 90%;
+  
+  display: block;
+}
+
+.center-modal{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#result-modal h2 { margin-top: 0; font-family: 'Inter', sans-serif; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

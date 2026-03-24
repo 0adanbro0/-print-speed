@@ -7,7 +7,7 @@ interface TimerProps{
 const Timer = ({content} : TimerProps) =>{
     return(
         <span className="timer">{
-            content === 0 ? 'Start typing' : content
+            content === -1 ? 'Start typing' : content
         }</span>
     );
 }
