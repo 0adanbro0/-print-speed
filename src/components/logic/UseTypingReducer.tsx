@@ -99,7 +99,11 @@ export function reducer(state:reducerSession, action:any){
                 return({
                     ...state,
                     isGameOver: true,
-                    wpm: (state.currentIndex / everageLanguageWord) / ((state.mode == 'infinitive' ? state.timePassedView : 60 - state.timePassedView) / 60),
+                    wpm: Number( 
+                                    (
+                                        (state.currentIndex / everageLanguageWord) / ((state.mode == 'infinitive' ? state.timePassedView : 60 - state.timePassedView) / 60)
+                                    ).toFixed(2) 
+                                ),
                     startTime: 0,
                     timePassedView: -1,
                 })

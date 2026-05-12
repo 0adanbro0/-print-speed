@@ -1,0 +1,14 @@
+services:
+  print-speed-website:
+    platform: linux/amd64
+    
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    image: print-speed-website:v1.0
+    container_name: print-speed-container
+    ports:
+      - "8080:80"
+
+    restart: no

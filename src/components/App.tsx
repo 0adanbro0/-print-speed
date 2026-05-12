@@ -34,7 +34,7 @@ const App = () => {
                     <h2>Ваш результат</h2>
                 </div>
                 <div className="center-modal">
-                    <p>Скорость: {state.wpm} WPM</p>
+                    <p>Скорость: {(state.wpm).toFixed(2)} WPM</p>
                 </div>
                 <div className="center-modal">
                     <Button click={CloseModal} content={"закрыть"}></Button>
